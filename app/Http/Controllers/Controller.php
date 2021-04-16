@@ -14,9 +14,11 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     protected $response = [
+        'type' => 'sucess',
         'status'  =>  Response::HTTP_OK,
         'data'    =>  [],
         'message' =>  '',
         'errors'  => []
     ];
+
 }

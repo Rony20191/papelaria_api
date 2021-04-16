@@ -11,7 +11,8 @@ class OrderRequest extends BaseRequest
     {
         return [
             'codigo_cliente' => 'required|integer|exists:App\Models\Client,id',
-            'codigo_produto' => 'required|integer|exists:App\Models\Product,id',
+            'produtos'       => 'required|array',
+            'produtos.*'     => 'integer|exists:App\Models\Product,id',
             'data_criacao'   => 'required|date|date_format:Y-m-d'
         ];
     }

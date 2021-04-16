@@ -4,18 +4,18 @@
 namespace App\Repositories\Contracts;
 
 
-use App\Models\Client;
-use Illuminate\Database\Eloquent\Collection;
 
 interface ClientRepositoryInterface
 {
-    public function index(array $filter = []):Collection;
+    public function index(array $filter = []);
 
-    public function store(array $dados): Client;
+    public function store(array $dados);
 
-    public function show(string $id): Client;
+    public function show(string $id);
 
     public function update(array $dados, string $id): bool;
 
     public function delete(string $id): bool;
+
+    public function showOrders($id);
 }

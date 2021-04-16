@@ -14,8 +14,16 @@ class Order extends Model
     protected $table = 'orders';
     protected $fillable = [
         'codigo_cliente',
-        'codigo_produto',
         'data_criacao'
     ];
     protected $dates = ['deleted_at'];
+    protected $hidden = ['pivot'];
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'order_products', 'codigo_pedido', 'codigo_produto');
+    }
+    public function client()
+    {
+        return $this->belongsTo(Client::class,'codigo_cliente', 'id');
+    }
 }

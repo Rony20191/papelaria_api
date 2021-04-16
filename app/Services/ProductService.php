@@ -24,62 +24,50 @@ class ProductService implements Contracts\ProductServiceInterface
         $this->productRepository = $productRepository;
     }
 
-    public function index(array $filter = []): Collection
+    public function index(array $filter = [])
     {
         return $this->productRepository->index($filter);
     }
 
-    public function store(Request $request)
+    public function store(array $dados)
     {
         $product = null;
-        $path = null;
-        $dados = $request->validated();
         try{
-            DB::beginTransaction();
+            $dados['foto'] = $dados['foto']->store('produtos');
+            $product       = $this->productRepository->store($dados);
 
-            if($request->hasFile('foto') && $request->file('foto')->isValid()){
-                $path = $request->file('foto')->store('produtos');
-            }
-
-            $dados['foto'] = $path;
-            $product = $this->productRepository->store($dados);
-            DB::commit();
         }catch (\Exception $ex){
-            if($path)
-             Storage::delete($path);
-            DB::rollBack();
+            if ($dados['foto'] && empty($product)) {
+                Storage::delete($dados['foto']);
+            }
+            throw new \Exception('Erro ao gravar o produto');
         }
+
         return $product;
     }
 
-    public function show(string $id): Model
+    public function show($id)
     {
         return $this->productRepository->show($id);
     }
 
-    public function update(Request $request, string $id): bool
+    public function update(array $dados, $id): bool
     {
-        $dados = $request->validated();
         $product = null;
-        $path = null;
         try{
-            DB::beginTransaction();
-
-            if($request->hasFile('foto') && $request->file('foto')->isValid()){
-                $path = $request->file('foto')->store('produtos');
+        $dados['foto'] = $dados['foto']->store('produtos');
+        $product       = $this->productRepository->update($dados, $id);
+        } catch (\Exception $ex) {
+            if ($dados['foto'] && empty($product)) {
+                Storage::delete($dados['foto']);
             }
-            $dados['foto'] = $path;
-            $product = $this->productRepository->update($request->all(),$id);
-            DB::commit();
-        }catch (\Exception $ex){
-            if($path)
-                Storage::delete($path);
-            DB::rollBack();
+            throw new \Exception('Erro ao gravar o produto');
         }
+
         return $product;
     }
 
-    public function delete(string $id): bool
+    public function delete($id): bool
     {
         return $this->productRepository->delete($id);
     }

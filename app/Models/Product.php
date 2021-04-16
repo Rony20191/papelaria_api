@@ -16,5 +16,6 @@ class Product extends Model
         'preco',
         'foto'
     ];
+    protected $hidden = ['pivot'];
     protected $dates = ['deleted_at'];
 }

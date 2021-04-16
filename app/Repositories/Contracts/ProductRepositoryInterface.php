@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface ProductRepositoryInterface
 {
-    public function index(array $filter = []):Collection;
+    public function index(array $filter = []);
 
-    public function store(array $dados): Product;
+    public function store(array $dados);
 
-    public function show(string $id): Product;
+    public function show(string $id);
 
     public function update(array $dados, string $id): bool;
 

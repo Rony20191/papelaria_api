@@ -49,4 +49,10 @@ class ClientController extends Controller
         $this->response['data'] = $this->clientService->delete($id);
         return response()->json($this->response, $this->response['status']);
     }
+
+    public function showOrders($id)
+    {
+        $this->response['data'] = $this->clientService->showOrders($id);
+        return response()->json($this->response, $this->response['status']);
+    }
 }

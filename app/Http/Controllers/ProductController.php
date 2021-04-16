@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
-use App\Models\Product;
 use App\Services\Contracts\ProductServiceInterface;
-use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -29,34 +27,25 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-        $product = $this->productService->store($request);
-        if($product) {
-            $this->response['data'] = $product ;
-        }else{
-            $this->response['status'] = Response::HTTP_INTERNAL_SERVER_ERROR;
-        }
-
+        $dados   = $request->validated();
+        $this->response['data']  = $this->productService->store($dados);
         return response()->json($this->response, $this->response['status']);
     }
 
-    public function show(string $id)
+    public function show($id)
     {
         $this->response['data'] = $this->productService->show($id);
         return response()->json($this->response, $this->response['status']);
     }
 
-    public function update(ProductRequest $request, string $id)
+    public function update(ProductRequest $request, $id)
     {
-        $product = $this->productService->update($request,$id);
-        if($product) {
-            $this->response['data'] = $product ;
-        }else{
-            $this->response['status'] = Response::HTTP_INTERNAL_SERVER_ERROR;
-        }
+        $dados = $request->validated();
+        $this->response['data'] = $this->productService->update($dados,$id);
         return response()->json($this->response, $this->response['status']);
     }
 
-    public function delete(string $id)
+    public function delete($id)
     {
         $this->response['data'] = $this->productService->delete($id);
         return response()->json($this->response, $this->response['status']);

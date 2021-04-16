@@ -2,37 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OrderRequest;
+use App\Services\Contracts\OrderServiceInterface;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
 
-    public function __construct()
+    private OrderServiceInterface $orderService;
+
+    public function __construct(OrderServiceInterface $orderService)
     {
+        $this->orderService = $orderService;
     }
 
     public function index(Request $request)
     {
-        // TODO: Implement index() method.
+        $this->response['data'] = $this->orderService->index($request->all());
+        return response()->json($this->response, $this->response['status']);
     }
 
-    public function store(Request $request)
+    public function store(OrderRequest $request)
     {
-        // TODO: Implement store() method.
+        $dados = $request->validated();
+        $this->response['data']  = $this->orderService->store($dados);
+        return response()->json($this->response, $this->response['status']);
     }
 
-    public function show(Request $request)
+    public function show($id)
     {
-        // TODO: Implement show() method.
+        $this->response['data'] = $this->orderService->show($id);
+        return response()->json($this->response, $this->response['status']);
     }
 
-    public function update(Request $request, string $id)
+    public function update(OrderRequest $request, $id)
     {
-        // TODO: Implement update() method.
+        $dados = $request->validated();
+        $this->response['data'] = $this->orderService->update($dados,$id);
+        return response()->json($this->response, $this->response['status']);
     }
 
-    public function delete(string $id)
+    public function delete($id)
     {
-        // TODO: Implement delete() method.
+        $this->response['data'] = $this->orderService->delete($id);
+        return response()->json($this->response, $this->response['status']);
     }
 }

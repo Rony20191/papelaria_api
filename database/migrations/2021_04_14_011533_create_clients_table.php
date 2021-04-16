@@ -21,6 +21,7 @@ class CreateClientsTable extends Migration
             $table->date('data_nascimento');
             $table->string('endereco',250);
             $table->string('complemento',250);
+            $table->string('bairro',250);
             $table->string('cep',250);
             $table->date('data_cadastro');
             $table->timestamps();

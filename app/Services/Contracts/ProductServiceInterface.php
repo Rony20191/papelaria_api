@@ -4,20 +4,18 @@
 namespace App\Services\Contracts;
 
 
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 interface ProductServiceInterface
 {
-    public function index(array $filter = []):Collection;
+    public function index(array $filter = []);
 
-    public function store(Request $request);
+    public function store(array $dados);
 
-    public function show(string $id): Model;
+    public function show($id);
 
-    public function update(Request $request, string $id): bool;
+    public function update(array $dados, $id): bool;
 
-    public function delete(string $id): bool;
+    public function delete($id): bool;
 
 }

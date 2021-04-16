@@ -7,3 +7,5 @@ Route::get('client/{id}',[ClientController::class,'show'])->name('client.show');
 Route::post('client',[ClientController::class,'store'])->name('client.store');
 Route::put('client/{id}',[ClientController::class,'update'])->name('client.update');
 Route::delete('client/{id}',[ClientController::class,'delete'])->name('client.delete');
+
+Route::get('client/{id}/orders',[ClientController::class,'showOrders'])->name('client.orders');

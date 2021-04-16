@@ -9,9 +9,10 @@ class ProductRequest extends BaseRequest
 
     public function rules()
     {
+
         return [
             'nome'  => 'required|string|min:3|max:255',
-            'preco' => 'required|numeric|not_in:0',
+            'preco' => 'required|numeric|min:0|not_in:0',
             'foto'  => 'required|file|max:5000|mimes:jpeg,png'
         ];
     }

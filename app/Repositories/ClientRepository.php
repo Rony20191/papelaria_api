@@ -5,39 +5,27 @@ namespace App\Repositories;
 
 
 use App\Models\Client;
-use Illuminate\Database\Eloquent\Collection;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ClientRepository implements Contracts\ClientRepositoryInterface
+class ClientRepository extends BaseRepository implements Contracts\ClientRepositoryInterface
 {
 
-    public function index(array $filter = []): Collection
+    public function __construct(Client $model)
     {
-        $query = Client::query();
-        if(!empty($filter)){
-            foreach ($filter as $key => $value){
-                $query->where($key,$value);
-            }
+        parent::__construct($model);
+    }
+
+    public function showOrders($id)
+    {
+        $client = $this->model->find($id);
+        if (empty($client)) {
+            throw new NotFoundHttpException('Modelo não encontrado');
         }
-        return $query->get();
-    }
+        $orders = $client->orders;
+        foreach ($orders as $order) {
+            $order->products = $order->products()->get();
+        }
 
-    public function store(array $dados): Client
-    {
-        return Client::create($dados);
-    }
-
-    public function show(string $id): Client
-    {
-        return Client::find($id);
-    }
-
-    public function update(array $dados, string $id): bool
-    {
-        return Client::find($id)->update($dados);
-    }
-
-    public function delete(string $id): bool
-    {
-        return Client::find($id)->delete($id);
+        return $orders;
     }
 }
