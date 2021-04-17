@@ -20,16 +20,19 @@ RUN apt-get update && apt-get install -y \
     vim \
     unzip
 
+RUN  docker-php-ext-install mysqli  pdo_mysql
+RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
+RUN docker-php-ext-install gd
+
 
 RUN apt-get clean &&  rm -rf /var/lib/apt/lists/*
 
 
-RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
-RUN docker-php-ext-install gd
+
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-COPY .env /var/www/.env
+COPY docker-files/app/ /var/www/.env
 
 
 
@@ -42,8 +45,6 @@ COPY --chown=www:www . /var/www
 
 RUN chown -R www-data:www-data /var/www
 
-
-RUN composer install
 
 
 USER www
